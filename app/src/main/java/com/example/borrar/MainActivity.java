@@ -17,8 +17,6 @@ public class MainActivity extends AppCompatActivity {
     public Button butCambiar;
     public Button butSiguiente;
 
-    private Button btnGuardar;
-
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
 
@@ -32,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
         butCambiar = findViewById(R.id.butCambiar);
         butSiguiente = findViewById(R.id.butSiguiente);
         input = findViewById(R.id.input);
-
-        btnGuardar = findViewById(R.id.btnGuardar);
 
 
         // le añadimos un Listener al boton
@@ -77,24 +73,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // PERSISTENCIA DE DATOS
-
+        // CARGAR DATOS
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         String valor = sharedPref.getString(getString(R.string.clave), getString(R.string.porDefecto));
         tvHello.setText(valor);
-        editor = sharedPref.edit();
 
-
-        // GUARDAR
-
-        btnGuardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String valor = tvHello.getText().toString();
-                editor.putString(getString(R.string.clave), valor);
-                editor.apply();
-            }
-        });
     }
 
 
@@ -114,7 +97,11 @@ public class MainActivity extends AppCompatActivity {
                     // ponemos el texto que viene en el intent del activity2 en el edit text del activity1
                     tvHello.setText(data.getStringExtra(Values.CLAVE_INTENT));
 
-
+                    // GUARDAR DATOS
+                    editor = sharedPref.edit();
+                    String valor = data.getStringExtra(Values.CLAVE_INTENT);
+                    editor.putString(getString(R.string.clave), valor);
+                    editor.apply();
                 }
                 break;
             }
